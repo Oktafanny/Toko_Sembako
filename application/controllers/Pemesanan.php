@@ -4,75 +4,90 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Pemesanan extends CI_Controller
 {
     public $input, $Madmin, $db, $form_validation, $session, $cart;
-
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
-        $this->load->model('Madmin');
         $this->load->library('cart');
-        $this->load->library('session');
-    }
-
-    public function index()
-    {
-        $data['kategori'] = $this->Madmin->get_all_data('kategori')->result();
-        $data['barang'] = $this->Madmin->get_all_data('barang')->result();
-        $this->load->view('pelanggan/layout/header');
-        $this->load->view('pelanggan/layout/menu');
-        $this->load->view('pelanggan/pemesanan/tampil', $data);
-        $this->load->view('pelanggan/layout/footer');
+        $this->load->model('Madmin');
     }
 
     public function add_to_cart()
     {
         $id_barang = $this->input->post('id_barang');
-        $qty = $this->input->post('jumlah');
-        $barang = $this->Madmin->get_by_id('barang', array('id_barang' => $id_barang))->row();
+        $jumlah = $this->input->post('jumlah');
+        $barang = $this->Madmin->getBarangById($id_barang);
 
         $data = array(
             'id' => $barang->id_barang,
-            'qty' => $qty,
+            'qty' => $jumlah,
             'price' => $barang->harga,
-            'name' => $barang->nama_barang,
-            'options' => array('kategori' => $barang->id_kategori)
+            'name' => $barang->nama_barang
         );
 
         $this->cart->insert($data);
-        redirect('pemesanan');
+        redirect('pemesanan/view_cart');
+    }
+
+    public function view_cart()
+    {
+        $this->load->view('user/cart');
     }
 
     public function checkout()
     {
-        $this->load->view('pelanggan/layout/header');
-        $this->load->view('pelanggan/layout/menu');
-        $this->load->view('pelanggan/pemesanan/checkout');
-        $this->load->view('pelanggan/layout/footer');
+        $user_data = $this->session->userdata('user_data');
+
+        if ($user_data) {
+            $data_transaksi = array(
+                'id_pelanggan' => $user_data->id_pelanggan,
+                'tgl_transaksi' => date('Y-m-d H:i:s'),
+                'jumlah_barang' => $this->cart->total_items(),
+                'totbay' => $this->cart->total(),
+                'status' => 'pending'
+            );
+
+            $this->Madmin->insert('transaksi', $data_transaksi);
+            $id_transaksi = $this->db->insert_id();
+
+            foreach ($this->cart->contents() as $item) {
+                $data_item = array(
+                    'id_transaksi' => $id_transaksi,
+                    'id_barang' => $item['id'],
+                    'jumlah' => $item['qty'],
+                    'total' => $item['subtotal']
+                );
+
+                $this->Madmin->insert('item_transaksi', $data_item);
+                $this->update_stok_barang($item['id'], $item['qty']);
+            }
+
+            $this->cart->destroy();
+            redirect('pemesanan/success');
+        } else {
+            redirect('user/index');
+        }
     }
 
-    public function process_order()
+    private function update_stok_barang($id_barang, $jumlah)
     {
-        $order_data = array(
-            'id_pelanggan' => $this->session->userdata('id_pelanggan'),
-            'tgl_transaksi' => date('Y-m-d H:i:s'),
-            'jumlah_barang' => $this->cart->total_items(),
-            'totbay' => $this->cart->total(),
-            'status' => 'Pending'
+        $barang = $this->Madmin->getBarangById($id_barang);
+        $new_stok = $barang->stok - $jumlah;
+
+        $this->Madmin->update('barang', array('stok' => $new_stok), 'id_barang', $id_barang);
+    }
+
+    public function success()
+    {
+        $this->load->view('user/success');
+    }
+    public function remove_from_cart($rowid)
+    {
+        $data = array(
+            'rowid' => $rowid,
+            'qty' => 0
         );
 
-        $this->db->insert('transaksi', $order_data);
-        $order_id = $this->db->insert_id();
-
-        foreach ($this->cart->contents() as $item) {
-            $item_data = array(
-                'id_transaksi' => $order_id,
-                'id_barang' => $item['id'],
-                'jumlah' => $item['qty'],
-                'total' => $item['subtotal']
-            );
-            $this->db->insert('item_transaksi', $item_data);
-        }
-
-        $this->cart->destroy();
-        redirect('pemesanan/checkout');
+        $this->cart->update($data);
+        redirect('pemesanan/view_cart');
     }
 }

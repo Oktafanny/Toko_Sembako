@@ -92,7 +92,7 @@
                                                     <h5 class="card-title"><?= $brg->nama_barang ?></h5>
                                                     <p class="card-text">Harga: <?= $brg->harga ?></p>
                                                     <p class="card-text">Stok: <?= $brg->stok ?></p>
-                                                    <form action="<?= base_url('pemesanan/add_to_cart') ?>" method="post">
+                                                    <form action="<?php echo site_url('pemesanan/add_to_cart'); ?>" method="post">
                                                         <div class="mb-3">
                                                             <label for="jumlah-<?= $brg->id_barang ?>" class="form-label">Jumlah</label>
                                                             <input type="number" class="form-control" id="jumlah-<?= $brg->id_barang ?>" name="jumlah" min="1" max="<?= $brg->stok ?>">
