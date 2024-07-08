@@ -35,6 +35,21 @@ class User extends CI_Controller
         }
     }
 
+    public function dashboard2()
+    {
+        // Check if session already exists
+        if ($this->session->userdata('user_data')) {
+            // Session already exists, load dashboard directly
+            $data['kategori'] = $this->Madmin->getKategoriBarang(); // Example: Fetch necessary data
+            $data['barang'] = $this->Madmin->getAllBarang(); // Example: Fetch necessary data
+
+            $this->load->view('user/dashboard', $data);
+        } else {
+            // No session, redirect to login
+            redirect('user/index');
+        }
+    }
+
     public function logout()
     {
         $this->session->unset_userdata('user_data'); // Destroy session on logout

@@ -37,7 +37,8 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="<?= site_url('pemesanan/checkout') ?>" class="btn btn-success">Checkout</a>
+        <a href="<?= site_url('pemesanan/checkout') ?>" class="btn btn-success">Pesan</a>
+        <a href="<?= site_url('user/dashboard2') ?>" class="btn btn-warning float-end">Tambah Barang</a>
     </div>
 </body>
 

@@ -191,4 +191,17 @@ class Madmin extends CI_Model
     {
         return $this->db->insert('pemesanan', $data);
     }
+
+    public function getTransactionDetails($id_transaksi)
+    {
+        $query = $this->db->get_where('transaksi', array('id_transaksi' => $id_transaksi));
+        return $query->row_array(); // Mengembalikan data transaksi sebagai array
+    }
+
+    // Mendapatkan detail pelanggan berdasarkan id_pelanggan
+    public function getCustomerDetails($id_pelanggan)
+    {
+        $query = $this->db->get_where('pelanggan', array('id_pelanggan' => $id_pelanggan));
+        return $query->row_array(); // Mengembalikan data pelanggan sebagai array
+    }
 }
