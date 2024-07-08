@@ -17,14 +17,14 @@ class Adminpanel extends CI_Controller
     }
     public function dashboard()
     {
-        // $data['total_ibu'] = $this->Madmin->get_total_mothers();
-        // $data['total_anak'] = $this->Madmin->get_total_children();
-        // $data['total_petugas'] = $this->Madmin->get_total_staff();
-        // $data['rata_bb'] = $this->Madmin->get_average_weight();
-        // $data['rata_tb'] = $this->Madmin->get_average_height();
+        $data['total_barang'] = $this->Madmin->get_total_barang();
+        $data['total_pelanggan'] = $this->Madmin->get_total_pelanggan();
+        $data['total_transaksi'] = $this->Madmin->get_total_transaksi();
+        $data['total_bayar'] = $this->Madmin->get_total_bayar();
+        $data['transactions'] = $this->Madmin->get_transactions();
         $this->load->view('admin/layout/menu');
         $this->load->view('admin/layout/header');
-        $this->load->view('admin/dashboard');
+        $this->load->view('admin/dashboard', $data);
         $this->load->view('admin/layout/footer');
     }
 

@@ -204,4 +204,45 @@ class Madmin extends CI_Model
         $query = $this->db->get_where('pelanggan', array('id_pelanggan' => $id_pelanggan));
         return $query->row_array(); // Mengembalikan data pelanggan sebagai array
     }
+    public function get_total_barang()
+    {
+        return $this->db->count_all('barang');
+    }
+
+    public function get_total_pelanggan()
+    {
+        return $this->db->count_all('pelanggan');
+    }
+
+    public function get_total_transaksi()
+    {
+        return $this->db->count_all('transaksi');
+    }
+
+    public function get_total_bayar()
+    {
+        $this->db->select_sum('totbay');
+        $query = $this->db->get('transaksi');
+        return $query->row()->totbay;
+    }
+    public function get_transactions()
+    {
+        $this->db->select('transaksi.*, pelanggan.nama, pelanggan.alamat, pelanggan.no_telp');
+        $this->db->from('transaksi');
+        $this->db->join('pelanggan', 'transaksi.id_pelanggan = pelanggan.id_pelanggan');
+        $this->db->order_by('transaksi.tgl_transaksi', 'DESC');
+        $query = $this->db->get();
+        $transactions = $query->result_array();
+
+        foreach ($transactions as &$transaction) {
+            $this->db->select('barang.nama_barang, item_transaksi.jumlah, item_transaksi.total');
+            $this->db->from('item_transaksi');
+            $this->db->join('barang', 'item_transaksi.id_barang = barang.id_barang');
+            $this->db->where('item_transaksi.id_transaksi', $transaction['id_transaksi']);
+            $query = $this->db->get();
+            $transaction['items'] = $query->result_array();
+        }
+
+        return $transactions;
+    }
 }

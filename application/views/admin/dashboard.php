@@ -3,55 +3,31 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="right_col" role="main">
     <!-- top tiles -->
-    <div class="row" style="display: inline-block;">
-        <div class="tile_count">
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Ibu</span>
-                <div class="count">
-                    <!-- <?= $total_ibu ?> -->
-                </div>
+    <div class="row" style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+        <div class="tile_count" style="width: 100%; display: flex; justify-content: space-between;">
+            <div class="col-md-2 col-sm-4 tile_stats_count" style="flex: 1; margin: 5px;">
+                <span class="count_top"><i class="fa fa-cubes"></i> Total Barang</span>
+                <div class="count"><?= $total_barang ?></div>
                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
             </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Anak</span>
-                <div class="count ">
-                    <!-- <?= $total_anak ?> -->
-                </div>
+            <div class="col-md-2 col-sm-4 tile_stats_count" style="flex: 1; margin: 5px;">
+                <span class="count_top"><i class="fa fa-users"></i> Total Pelanggan</span>
+                <div class="count"><?= $total_pelanggan ?></div>
                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
             </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Petugas</span>
-                <div class="count">
-                    <!-- <?= $total_petugas ?> -->
-                </div>
+            <div class="col-md-2 col-sm-4 tile_stats_count" style="flex: 1; margin: 5px;">
+                <span class="count_top"><i class="fa fa-exchange"></i> Total Transaksi</span>
+                <div class="count"><?= $total_transaksi ?></div>
                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
             </div>
-            <!-- <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Collections</span>
-                <div class="count">2,315</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div>
-            <div class="col-md-2 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-user"></i> Total Connections</span>
-                <div class="count">7,325</div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>34% </i> From last Week</span>
-            </div> -->
-            <div class="col-md-3 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-clock-o"></i> Rata-rata BB Anak</span>
-                <div class="count green">
-                    <!-- <?= $rata_bb ?> -->
-                </div>
-                <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
-            </div>
-            <div class="col-md-3 col-sm-4  tile_stats_count">
-                <span class="count_top"><i class="fa fa-clock-o"></i> Rata-rata TB Anak</span>
-                <div class="count green">
-                    <!-- <?= $rata_tb ?> -->
-                </div>
+            <div class="col-md-3 col-sm-4 tile_stats_count" style="flex: 1; margin: 5px;">
+                <span class="count_top"><i class="fa fa-money"></i> Total Bayar</span>
+                <div class="count green"><?= $total_bayar ?></div>
                 <span class="count_bottom"><i class="green"><i class="fa fa-sort-asc"></i>4% </i> From last Week</span>
             </div>
         </div>
     </div>
+
     <!-- /top tiles -->
 
     <div class="row">
@@ -63,8 +39,7 @@
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
-                                aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" href="#">Settings 1</a>
                                 <a class="dropdown-item" href="#">Settings 2</a>
@@ -73,7 +48,79 @@
                         <li><a class="close-link"><i class="fa fa-close"></i></a>
                         </li>
                     </ul>
-                    <div class="clearfix"></div>
+                    <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">No</th>
+                                    <th class="column-title">Tanggal Transaksi</th>
+                                    <th class="column-title">Nama Pelanggan</th>
+                                    <th class="column-title">Alamat</th>
+                                    <th class="column-title">No. Telepon</th>
+                                    <th class="column-title">Daftar Belanjaan</th>
+                                    <th class="column-title">Total Bayar</th>
+                                    <th class="column-title">Status</th>
+                                    <th class="column-title"><span class="nobr">Action</span></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php $no = 1; ?>
+                                <?php foreach ($transactions as $transaction) { ?>
+                                    <tr class="even pointer">
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo date('d-m-Y H:i:s', strtotime($transaction['tgl_transaksi'])); ?></td>
+                                        <td><?php echo $transaction['nama']; ?></td>
+                                        <td><?php echo $transaction['alamat']; ?></td>
+                                        <td><?php echo $transaction['no_telp']; ?></td>
+                                        <td>
+                                            <ul>
+                                                <?php foreach ($transaction['items'] as $item) { ?>
+                                                    <li><?php echo $item['nama_barang']; ?> (<?php echo $item['jumlah']; ?>)</li>
+                                                <?php } ?>
+                                            </ul>
+                                        </td>
+                                        <td><?php echo number_format($transaction['totbay'], 0, ',', '.'); ?></td>
+                                        <td><?php echo $transaction['status']; ?></td>
+                                        <td>
+                                            <!-- Actions can be added here -->
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- <div class="table-responsive">
+                        <table class="table table-striped jambo_table bulk_action">
+                            <thead>
+                                <tr class="headings">
+                                    <th class="column-title">No </th>
+                                    <th class="column-title">Nama Pelanggan</th>
+                                    <th class="column-title">Alamat</th>
+                                    <th class="column-title">No. Telepon </th>
+                                    <th class="column-title">Tanggal Transaksi</th>
+                                    <th class="column-title">Daftar Belanjaan</th>
+                                    <th class="column-title">Total Bayar</th>
+                                    <th class="column-title">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($transaksi as $key => $trans) : ?>
+                                    <tr>
+                                        <td><?= $key + 1 ?></td>
+                                        <td><?= $trans->nama_pelanggan ?></td>
+                                        <td><?= $trans->alamat ?></td>
+                                        <td><?= $trans->no_telp ?></td>
+                                        <td><?= $trans->tgl_transaksi ?></td>
+                                        <td><?= $trans->daftar_belanjaan ?></td>
+                                        <td><?= $trans->totbay ?></td>
+                                        <td><?= $trans->status ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div> -->
+
                 </div>
                 <div class="x_content">
                     <canvas id="lineChart"></canvas>
@@ -91,8 +138,7 @@
                         <h3>Network Activities <small>Graph title sub-title</small></h3>
                     </div>
                     <div class="col-md-6">
-                        <div id="reportrange" class="pull-right"
-                            style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
                             <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
                             <span>December 30, 2014 - January 28, 2015</span> <b class="caret"></b>
                         </div>
