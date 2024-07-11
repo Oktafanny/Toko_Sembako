@@ -245,4 +245,41 @@ class Madmin extends CI_Model
 
         return $transactions;
     }
+    public function getTransactionHistory($id_pelanggan)
+    {
+        // Get transactions
+        $this->db->select('transaksi.id_transaksi, transaksi.tgl_transaksi, transaksi.totbay, transaksi.status');
+        $this->db->from('transaksi');
+        $this->db->where('transaksi.id_pelanggan', $id_pelanggan);
+        $this->db->order_by('transaksi.tgl_transaksi', 'DESC');
+        $query = $this->db->get();
+        $transactions = $query->result_array();
+
+        // Get items for each transaction
+        foreach ($transactions as &$transaction) {
+            $this->db->select('barang.nama_barang, item_transaksi.jumlah, item_transaksi.total');
+            $this->db->from('item_transaksi');
+            $this->db->join('barang', 'item_transaksi.id_barang = barang.id_barang');
+            $this->db->where('item_transaksi.id_transaksi', $transaction['id_transaksi']);
+            $query = $this->db->get();
+            $transaction['items'] = $query->result_array();
+        }
+
+        return $transactions;
+    }
+    public function update_status($id_transaksi, $new_status)
+    {
+        $this->db->where('id_transaksi', $id_transaksi);
+        $this->db->update('transaksi', array('status' => $new_status));
+    }
+    public function getItemsByTransactionId($id_transaksi)
+    {
+        $this->db->select('barang.nama_barang, item_transaksi.jumlah, item_transaksi.total');
+        $this->db->from('item_transaksi');
+        $this->db->join('barang', 'item_transaksi.id_barang = barang.id_barang');
+        $this->db->where('item_transaksi.id_transaksi', $id_transaksi);
+        $query = $this->db->get();
+
+        return $query->result_array();
+    }
 }

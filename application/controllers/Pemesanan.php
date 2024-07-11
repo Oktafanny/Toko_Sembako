@@ -77,27 +77,19 @@ class Pemesanan extends CI_Controller
         $this->Madmin->update('barang', array('stok' => $new_stok), 'id_barang', $id_barang);
     }
 
-    // public function success()
-    // {
-    //     $this->load->view('user/success');
-    // }
-
     public function success($id_transaksi)
     {
-        $transaction = $this->Madmin->getTransactionDetails($id_transaksi); // Adjust with your actual model method
+        $transaction = $this->Madmin->getTransactionDetails($id_transaksi);
 
-        // Check if transaction exists and fetch customer details
         if ($transaction) {
             $data['customer'] = $this->Madmin->getCustomerDetails($transaction['id_pelanggan']);
             $data['total'] = $transaction['totbay'];
+            $data['transaction'] = $transaction;
+            $data['items'] = $this->Madmin->getItemsByTransactionId($id_transaksi);
             $this->load->view('user/success', $data);
         } else {
-            // Handle error or redirect if transaction not found
             redirect('some/error/page');
         }
-
-        // Load view with data
-        // $this->load->view('user/success', $data);
     }
     public function remove_from_cart($rowid)
     {

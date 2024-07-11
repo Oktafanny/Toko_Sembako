@@ -17,55 +17,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
     <title>E - Posyandu</title>
 </head>
-
-<!-- <body>
-    <div class="container">
-        <div class="p-5 mb-4 bg-light rounded-3">
-            <div class="container-fluid py-5">
-                <div class="kategori">
-                    <h3>Kategori</h3>
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <?php foreach ($kategori as $index => $kat) : ?>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link <?= $index === 0 ? 'active' : '' ?>" id="tab-<?= $kat->id_kategori ?>" data-bs-toggle="tab" data-bs-target="#pane-<?= $kat->id_kategori ?>" type="button" role="tab" aria-controls="pane-<?= $kat->id_kategori ?>" aria-selected="<?= $index === 0 ? 'true' : 'false' ?>"><?= $kat->kategori ?></button>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-                <div class="tab-content" id="myTabContent">
-                    <?php foreach ($kategori as $index => $kat) : ?>
-                        <div class="tab-pane fade <?= $index === 0 ? 'show active' : '' ?>" id="pane-<?= $kat->id_kategori ?>" role="tabpanel" aria-labelledby="tab-<?= $kat->id_kategori ?>">
-                            <div class="row mt-4">
-                                <?php foreach ($barang as $brg) : ?>
-                                    <?php if ($brg->id_kategori == $kat->id_kategori) : ?>
-                                        <div class="col-md-4">
-                                            <div class="card mb-4">
-                                                <div class="card-body">
-                                                    <h5 class="card-title"><?= $brg->nama_barang ?></h5>
-                                                    <p class="card-text">Harga: <?= $brg->harga ?></p>
-                                                    <p class="card-text">Stok: <?= $brg->stok ?></p>
-                                                    <form action="<?= base_url('pemesanan/tambah') ?>" method="post">
-                                                        <div class="mb-3">
-                                                            <label for="jumlah-<?= $brg->id_barang ?>" class="form-label">Jumlah</label>
-                                                            <input type="number" class="form-control" id="jumlah-<?= $brg->id_barang ?>" name="jumlah" min="1" max="<?= $brg->stok ?>">
-                                                        </div>
-                                                        <input type="hidden" name="id_barang" value="<?= $brg->id_barang ?>">
-                                                        <button type="submit" class="btn btn-primary">Pesan</button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</body> -->
-
 <body>
     <div class="container">
         <div class="p-5 mb-4 bg-light rounded-3">
@@ -108,6 +59,9 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="<?= site_url('user/transaction_history'); ?>" class="btn btn-success btn-lg">Riwayat Transaksi</a>
                 </div>
             </div>
         </div>

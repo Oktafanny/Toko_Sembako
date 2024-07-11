@@ -54,3 +54,5 @@ $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 $route['pemesanan'] = 'pemesanan/index';
 $route['pemesanan/tambah'] = 'pemesanan/tambah';
+$route['transaction_history'] = 'user/transaction_history';
+

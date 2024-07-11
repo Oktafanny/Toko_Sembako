@@ -34,7 +34,7 @@
         <div class="col-md-12 col-sm-12  ">
             <div class="x_panel">
                 <div class="x_title">
-                    <h2>Line graph<small>Sessions</small></h2>
+                    <h2>Daftar Pesanan<small>Masuk</small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                         <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                         </li>
@@ -82,54 +82,25 @@
                                         <td><?php echo number_format($transaction['totbay'], 0, ',', '.'); ?></td>
                                         <td><?php echo $transaction['status']; ?></td>
                                         <td>
-                                            <!-- Actions can be added here -->
+                                            <?php if ($transaction['status'] == 'pending') { ?>
+                                                <a href="<?= site_url('Adminpanel/update_status/' . $transaction['id_transaksi'] . '/proses'); ?>" class="btn btn-warning">Proses</a>
+                                            <?php } elseif ($transaction['status'] == 'proses') { ?>
+                                                <a href="<?= site_url('Adminpanel/update_status/' . $transaction['id_transaksi'] . '/selesai'); ?>" class="btn btn-success">Selesai</a>
+                                            <?php } elseif ($transaction['status'] == 'selesai') { ?>
+                                                <a class="btn btn-secondary" disabled>Selesai</a>
+                                            <?php } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
                     </div>
-
-                    <!-- <div class="table-responsive">
-                        <table class="table table-striped jambo_table bulk_action">
-                            <thead>
-                                <tr class="headings">
-                                    <th class="column-title">No </th>
-                                    <th class="column-title">Nama Pelanggan</th>
-                                    <th class="column-title">Alamat</th>
-                                    <th class="column-title">No. Telepon </th>
-                                    <th class="column-title">Tanggal Transaksi</th>
-                                    <th class="column-title">Daftar Belanjaan</th>
-                                    <th class="column-title">Total Bayar</th>
-                                    <th class="column-title">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($transaksi as $key => $trans) : ?>
-                                    <tr>
-                                        <td><?= $key + 1 ?></td>
-                                        <td><?= $trans->nama_pelanggan ?></td>
-                                        <td><?= $trans->alamat ?></td>
-                                        <td><?= $trans->no_telp ?></td>
-                                        <td><?= $trans->tgl_transaksi ?></td>
-                                        <td><?= $trans->daftar_belanjaan ?></td>
-                                        <td><?= $trans->totbay ?></td>
-                                        <td><?= $trans->status ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div> -->
-
-                </div>
-                <div class="x_content">
-                    <canvas id="lineChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="dashboard_graph">
 
@@ -198,7 +169,7 @@
                 <div class="clearfix"></div>
             </div>
         </div>
-    </div>
+    </div> -->
     <br />
 </div>
 <!-- /page content -->

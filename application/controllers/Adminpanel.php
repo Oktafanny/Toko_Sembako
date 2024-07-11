@@ -60,7 +60,7 @@ class Adminpanel extends CI_Controller
             'oldPassword',
             'pasword lama',
             'required',
-            array('required' => 'Password wajib di isi !', )
+            array('required' => 'Password wajib di isi !',)
         );
         $this->form_validation->set_rules(
             'newPassword',
@@ -116,5 +116,14 @@ class Adminpanel extends CI_Controller
     public function logout()
     {
         redirect('adminpanel');
+    }
+
+    public function update_status($id_transaksi, $new_status)
+    {
+        // Update status transaksi
+        $this->Madmin->update_status($id_transaksi, $new_status);
+
+        // Redirect kembali ke halaman dashboard
+        redirect('Adminpanel/dashboard');
     }
 }

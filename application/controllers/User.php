@@ -24,11 +24,11 @@ class User extends CI_Controller
         if ($user) {
             // Set session data if login successful
             $this->session->set_userdata('user_data', $user);
-    
+
             // Load necessary data for the view
             $data['kategori'] = $this->Madmin->getKategoriBarang();
             $data['barang'] = $this->Madmin->getAllBarang();
-    
+
             $this->load->view('user/dashboard', $data);
         } else {
             redirect('user/index'); // Redirect to login page if login fails
@@ -56,8 +56,16 @@ class User extends CI_Controller
         redirect('user/index'); // Redirect to login page after logout
     }
 
-    // public function logout()
-    // {
-    //     redirect('user');
-    // }
+    // application/controllers/User.php
+    public function transaction_history()
+    {
+        $user_data = $this->session->userdata('user_data');
+
+        if ($user_data) {
+            $data['transactions'] = $this->Madmin->getTransactionHistory($user_data->id_pelanggan);
+            $this->load->view('user/transaction_history', $data);
+        } else {
+            redirect('user/index');
+        }
+    }
 }
