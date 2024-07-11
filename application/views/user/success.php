@@ -63,10 +63,10 @@
                     <div class="card-body">
                         <table class="table table-striped">
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <th>Total Belanja</th>
                                     <td><?= number_format($total, 0, ',', '.') ?></td>
-                                </tr>
+                                </tr> -->
                                 <tr>
                                     <th>Nama Pelanggan</th>
                                     <td><?= $customer['nama'] ?></td>
@@ -88,9 +88,6 @@
 
         <div class="text-center">
             <a href="<?= site_url('user/dashboard'); ?>" class="btn btn-primary">Kembali ke Dashboard</a>
-        </div>
-        <div class="text-center">
-            <a class="btn btn-primary">Transfer</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
